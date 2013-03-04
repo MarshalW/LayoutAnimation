@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#ffdec6">
+    <View
+            android:id="@+id/bottomView"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="#b6c3ff"
+            android:layout_alignParentBottom="true"/>
+    <!--<TextView-->
+            <!--android:id="@+id/midItem"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:text="hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"-->
+            <!--android:layout_above="@id/bottomView"-->
+            <!--android:background="#bcff73"/>-->
+    <com.example.LayoutAnimation.MySurfaceView
+            android:id="@+id/midItem"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_above="@id/bottomView"
+            />
+    <View
+            android:id="@+id/topItem"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="#ffae74"
+            android:layout_above="@id/midItem"/>
+</RelativeLayout>
+
