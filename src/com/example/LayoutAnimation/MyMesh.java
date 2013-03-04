@@ -35,9 +35,13 @@ public class MyMesh {
                     "}";
 
     private FloatBuffer vertexBuffer;
-    private final int mProgram;
+    private int mProgram;
     private int mPositionHandle;
     private int mColorHandle;
+
+    private boolean inited;
+
+    private double animateFactor;
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
@@ -48,6 +52,16 @@ public class MyMesh {
             0.5f, 0.5f, 0.0f,      // top right
             0.5f, -0.5f, 0.0f   // bottom right
     };
+
+//    private float belowSquareCoords[] = new float[12];
+
+    public void setAnimateFactor(double animateFactor) {
+        this.animateFactor = animateFactor;
+    }
+
+    public double getAnimateFactor() {
+        return animateFactor;
+    }
 
     public void setSquareCoords(float[] squareCoords) {
         this.squareCoords = squareCoords;
@@ -62,17 +76,6 @@ public class MyMesh {
     float color[] = {0.63671875f, 0.76953125f, 0.22265625f, 1.0f};
 
     public MyMesh() {
-        // prepare shaders and OpenGL program
-        int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER,
-                vertexShaderCode);
-        int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);
-
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
-
     }
 
     public static int loadShader(int type, String shaderCode) {
@@ -88,10 +91,25 @@ public class MyMesh {
     }
 
     public void draw(float[] mvpMatrix) {
+        if (!inited) {
+            // prepare shaders and OpenGL program
+            int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER,
+                    vertexShaderCode);
+            int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER,
+                    fragmentShaderCode);
+
+            mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+            GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+            GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+            GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
+
+            this.inited = true;
+        }
+
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (number of coordinate values * 4 bytes per float)
-                squareCoords.length * 4);
+                squareCoords.length * 4 * 2);
         // use the device hardware's native byte order
         bb.order(ByteOrder.nativeOrder());
 

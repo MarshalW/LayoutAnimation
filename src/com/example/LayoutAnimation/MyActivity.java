@@ -10,17 +10,7 @@ import android.view.ViewGroup;
 
 public class MyActivity extends Activity {
 
-    View midView;
-
-    Handler handler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            ViewGroup viewGroup=(ViewGroup)midView.getParent();
-            if(viewGroup!=null){
-                midView.setVisibility(View.VISIBLE);
-            }
-        }
-    };
+    private MySurfaceView mySurfaceView;
 
     /**
      * Called when the activity is first created.
@@ -29,20 +19,22 @@ public class MyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        midView=findViewById(R.id.midItem);
-        midView.setVisibility(View.GONE);
 
-        ViewGroup viewGroup=(ViewGroup)midView.getParent();
-        LayoutTransition layoutTransition=new LayoutTransition();
-        layoutTransition.setDuration(1500);
-        layoutTransition.disableTransitionType(LayoutTransition.APPEARING);
-        viewGroup.setLayoutTransition(layoutTransition);
+        mySurfaceView=(MySurfaceView)this.findViewById(R.id.animateView);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        handler.sendMessageDelayed(new Message(),1000);
+        mySurfaceView.onResume();
+
+        mySurfaceView.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mySurfaceView.onPause();
     }
 }
